@@ -47,7 +47,7 @@ const OutputPanel = () => {
                       <div key={id} className="flex justify-between items-center bg-white/5 p-2 rounded-lg text-xs">
                         <span className="text-white/70">{node?.name}</span>
                         <span className="font-mono font-bold text-brand-blue">
-                          {dist === Infinity ? 'Unreachable' : dist}
+                          {dist === Infinity ? 'Unreachable' : (Number.isInteger(dist) ? dist : Number(dist).toFixed(2))}
                         </span>
                       </div>
                     );
@@ -108,7 +108,9 @@ const OutputPanel = () => {
                 <div>
                   <label className="text-[10px] font-bold text-white/40 uppercase block mb-2">Selected Edges</label>
                   <div className="grid gap-1.5 max-h-40 overflow-y-auto pr-1">
-                    {algorithmResult.edges.map(edge => {
+                    {algorithmResult.edges.map(edgeId => {
+                      const edge = edges.find(e => e.id === edgeId);
+                      if (!edge) return null;
                       const u = nodes.find(n => n.id === edge.source);
                       const v = nodes.find(n => n.id === edge.target);
                       return (

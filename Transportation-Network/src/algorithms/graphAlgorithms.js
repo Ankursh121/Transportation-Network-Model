@@ -116,37 +116,42 @@ export const getMST = (nodes, edges) => {
   if (nodes.length === 0) return { edges: [], cost: 0 };
 
   const mstEdges = [];
-  const visited = new Set([nodes[0].id]);
   let totalCost = 0;
+  const visited = new Set();
 
-  // We loop until we've visited all nodes that are reachable
-  // Not using visited.size < nodes.length to handle disconnected components
-  while (true) {
-    let minEdge = null;
-    let minWeight = Infinity;
+  for (const startNode of nodes) {
+    if (visited.has(startNode.id)) continue;
+    
+    // Start a new tree in the spanning forest
+    visited.add(startNode.id);
 
-    for (const edge of edges) {
-      const uIn = visited.has(edge.source);
-      const vIn = visited.has(edge.target);
+    while (true) {
+      let minEdge = null;
+      let minWeight = Infinity;
 
-      // Edge connects seen area to unseen area
-      if ((uIn && !vIn) || (!uIn && vIn)) {
-        if (edge.weight < minWeight) {
-          minWeight = edge.weight;
-          minEdge = edge;
+      for (const edge of edges) {
+        const uIn = visited.has(edge.source);
+        const vIn = visited.has(edge.target);
+
+        // Edge connects seen area to unseen area
+        if ((uIn && !vIn) || (!uIn && vIn)) {
+          if (edge.weight < minWeight) {
+            minWeight = edge.weight;
+            minEdge = edge;
+          }
         }
       }
+
+      if (!minEdge) break;
+
+      mstEdges.push(minEdge);
+      totalCost += minWeight;
+      visited.add(minEdge.source);
+      visited.add(minEdge.target);
     }
-
-    if (!minEdge) break;
-
-    mstEdges.push(minEdge);
-    totalCost += minWeight;
-    visited.add(minEdge.source);
-    visited.add(minEdge.target);
   }
 
-  return { edges: mstEdges, cost: totalCost };
+  return { edges: mstEdges, cost: Number(totalCost.toFixed(2)) };
 };
 
 /**

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Play, RefreshCw, Shuffle, Info } from 'lucide-react';
+import { Plus, Trash2, Play, RefreshCw, Shuffle, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useGraphStore } from '../../store/useGraphStore';
 import { dijkstra, bfs, dfs, getReachability, getMST } from '../../algorithms/graphAlgorithms';
 
@@ -11,6 +11,7 @@ const ControlPanel = () => {
     currentStep, setCurrentStep, resetGraph, generateRandomGraph 
   } = useGraphStore();
 
+  const [isOpen, setIsOpen] = useState(true);
   const [cityName, setCityName] = useState('');
   const [edgeSource, setEdgeSource] = useState('');
   const [edgeTarget, setEdgeTarget] = useState('');
@@ -102,9 +103,33 @@ const ControlPanel = () => {
   };
 
   return (
-    <div className="absolute top-4 left-4 w-80 max-h-[calc(100vh-32px)] flex flex-col gap-4 overflow-y-auto z-10 p-1">
-      <div className="glass p-6 rounded-2xl">
-        <h1 className="text-xl font-black text-white leading-tight mb-1 uppercase tracking-tighter">
+    <>
+      {/* Show Panel Button (visible when closed) */}
+      {!isOpen && (
+        <button 
+          onClick={() => setIsOpen(true)}
+          className="absolute top-4 left-4 z-30 p-3 glass-card border border-white/10 rounded-xl shadow-2xl text-white/50 hover:text-brand-cyan hover:scale-105 transition-all animate-fade-in"
+          title="Show Panel"
+        >
+          <ChevronRight size={20} />
+        </button>
+      )}
+
+      {/* Main Panel */}
+      <div className={`absolute top-4 left-4 z-20 flex transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? 'translate-x-0' : '-translate-x-[calc(100%+32px)]'}`}>
+      
+      {/* Panel Content Wrapper */}
+      <div className="w-[330px] max-h-[calc(100vh-32px)] flex flex-col gap-4 overflow-y-auto p-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+
+      <div className="glass p-6 rounded-2xl relative shadow-2xl">
+        <button 
+          onClick={() => setIsOpen(false)}
+          className="absolute top-4 right-4 p-2 text-white/40 hover:text-white glass-hover rounded-full transition-all"
+          title="Hide Panel"
+        >
+           <ChevronLeft size={16} />
+        </button>
+        <h1 className="text-xl font-black text-white leading-tight mb-1 uppercase tracking-tighter pr-6">
           Transportation<br/>
           <span className="text-brand-blue text-2xl">Network</span> Model
         </h1>
@@ -305,7 +330,10 @@ const ControlPanel = () => {
           <li>Labels appear when hovering or in results.</li>
         </ul>
       </div>
+      
+      </div> {/* Closes inner content wrapper */}
     </div>
+    </>
   );
 };
 

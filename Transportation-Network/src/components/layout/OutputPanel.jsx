@@ -43,12 +43,28 @@ const OutputPanel = () => {
                 <div className="grid gap-1.5">
                   {Object.entries(algorithmResult.distances).map(([id, dist]) => {
                     const node = nodes.find(n => n.id === id);
+                    const pathNodes = algorithmResult.paths?.[id] || [];
                     return (
-                      <div key={id} className="flex justify-between items-center bg-white/5 p-2 rounded-lg text-xs">
-                        <span className="text-white/70">{node?.name}</span>
-                        <span className="font-mono font-bold text-brand-blue">
-                          {dist === Infinity ? 'Unreachable' : (Number.isInteger(dist) ? dist : Number(dist).toFixed(2))}
-                        </span>
+                      <div key={id} className="flex flex-col bg-white/5 p-2 rounded-lg text-xs gap-1.5">
+                        <div className="flex justify-between items-center">
+                          <span className="text-white/70 font-bold">{node?.name}</span>
+                          <span className="font-mono font-bold text-brand-blue">
+                            {dist === Infinity ? 'Unreachable' : (Number.isInteger(dist) ? dist : Number(dist).toFixed(2))}
+                          </span>
+                        </div>
+                        {dist !== Infinity && dist > 0 && pathNodes.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 mt-0.5 text-[9px] text-white/40">
+                            {pathNodes.map((nId, idx) => {
+                               const pathNode = nodes.find(n => n.id === nId);
+                               return (
+                                 <React.Fragment key={`${id}-node-${idx}`}>
+                                   <span className="font-bold">{pathNode?.name}</span>
+                                   {idx < pathNodes.length - 1 && <span className="text-brand-cyan opacity-60">→</span>}
+                                 </React.Fragment>
+                               );
+                            })}
+                          </div>
+                        )}
                       </div>
                     );
                   })}

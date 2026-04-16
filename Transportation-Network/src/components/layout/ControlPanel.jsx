@@ -56,18 +56,23 @@ const ControlPanel = () => {
     // Convert previous mapping to path edges for highlighting
     // This is a simplified version, ideally we'd show paths to all nodes
     const pathEdges = [];
+    const paths = {};
     Object.keys(result.previous).forEach(targetId => {
       let curr = targetId;
       while (result.previous[curr]) {
         pathEdges.push(result.previous[curr].edgeId);
         curr = result.previous[curr].node;
       }
+      
+      const { path } = result.getPathTo(targetId);
+      paths[targetId] = path;
     });
 
     setAlgorithmResult({
       type: 'shortestPath',
       distances: result.distances,
-      pathEdges
+      pathEdges,
+      paths
     });
   };
 
@@ -321,13 +326,18 @@ const ControlPanel = () => {
       <div className="glass p-4 rounded-2xl">
         <div className="flex items-center gap-2 mb-2">
           <Info size={14} className="text-brand-blue" />
-          <span className="text-[10px] uppercase font-bold text-white/70">Instruction</span>
+          <span className="text-[10px] uppercase font-bold text-white/70">Legend & Instructions</span>
         </div>
-        <ul className="text-[10px] text-white/50 space-y-1 list-disc pl-4">
+        <div className="text-[9px] uppercase font-bold text-white/50 space-y-2 mb-3">
+          <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></div> Source Node</div>
+          <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div> Reachable Node</div>
+          <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-red-900 border border-red-500 opacity-50"></div> Unreachable Node</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-1 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.8)]"></div> MST Edge (Gold)</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-1 rounded-full bg-brand-cyan shadow-[0_0_8px_rgba(0,210,255,0.8)]"></div> Shortest Path Edge (Cyan)</div>
+        </div>
+        <ul className="text-[9px] text-white/40 space-y-1 list-disc pl-4 italic">
           <li>Minimum 5 nodes required for full analysis.</li>
           <li>Click a node to select it or set as Source.</li>
-          <li>Red nodes indicate the Starting Point.</li>
-          <li>Labels appear when hovering or in results.</li>
         </ul>
       </div>
       

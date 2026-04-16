@@ -94,7 +94,11 @@ const ControlPanel = () => {
   const runMST = () => {
     if (nodes.length < 5) return alert('Minimum 5 cities required.');
     const result = getMST(nodes, edges);
-    setAlgorithmResult({ type: 'mst', edges: result.edges, cost: result.cost });
+    setAlgorithmResult({ 
+      type: 'mst', 
+      edges: result.edges.map(e => e.id), 
+      cost: result.cost 
+    });
   };
 
   return (

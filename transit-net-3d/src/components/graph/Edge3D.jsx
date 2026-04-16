@@ -53,11 +53,11 @@ const Edge3D = ({ edge, isHighlighted, isMST }) => {
   const mid = useMemo(() => {
     const m = new THREE.Vector3().lerpVectors(start, end, 0.5);
     const distance = start.distanceTo(end);
-    m.add(new THREE.Vector3(
-      Math.sin(start.x) * distance * 0.2, 
-      Math.cos(start.z) * distance * 0.2, 
-      Math.sin(start.y) * distance * 0.2
-    ));
+    
+    // Push the midpoint outwards along its normal from the center
+    // We ensure the midpoint is at least 1.5 units above the furthest node
+    m.normalize().multiplyScalar(5 + distance * 0.4 + 1.2);
+    
     return m;
   }, [start, end]);
 
@@ -79,16 +79,16 @@ const Edge3D = ({ edge, isHighlighted, isMST }) => {
       />
       
       {/* Traveling flow particles */}
-      {(isHighlighted || isMST) ? (
+      {(isHighlighted || isMST) && (
         <>
           <PulseParticle start={start} mid={mid} end={end} offset={0} speed={0.8} color={color} />
           <PulseParticle start={start} mid={mid} end={end} offset={0.5} speed={0.8} color={color} />
         </>
-      ) : (
-        // Only show ambient flow if nodes are not too many
-        nodes.length < 20 && Math.random() > 0.8 && (
-          <PulseParticle start={start} mid={mid} end={end} offset={Math.random()} speed={0.3} color="#4f46e5" />
-        )
+      )}
+      
+      {/* Ambient flow for non-highlighted edges - stabilized */}
+      {!isHighlighted && !isMST && nodes.length < 20 && (
+        <PulseParticle start={start} mid={mid} end={end} offset={edge.id.length % 10 / 10} speed={0.3} color="#4f46e5" />
       )}
       
       {(isHighlighted || isMST) && (

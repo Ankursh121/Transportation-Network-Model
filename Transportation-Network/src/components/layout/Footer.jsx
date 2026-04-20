@@ -19,6 +19,22 @@ const InstagramIcon = ({ size }) => (
   </svg>
 );
 
+const GithubIcon = ({ size }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+  </svg>
+);
+
 const Footer = ({ isVisible, onClose }) => {
   return (
     <div 
@@ -94,6 +110,14 @@ const Footer = ({ isVisible, onClose }) => {
              <div className="text-[14px] font-black tracking-widest text-[#00d2ff] glow-text uppercase mb-2">
                Ningombam Anandshree Singh Sir
              </div>
+             <a
+               href="https://share.google/Q8OlPGILzRNx5JE0K"
+               target="_blank"
+               rel="noopener noreferrer"
+               className="flex items-center gap-2 text-[10px] text-white/40 hover:text-[#00d2ff] transition-colors uppercase font-black tracking-widest mb-2"
+             >
+               <GithubIcon size={13} /> GitHub
+             </a>
              <div className="px-4 py-1.5 glass-light rounded-full border border-white/5 flex items-center gap-2 mt-1">
                 <Heart size={10} className="text-brand-purple fill-brand-purple animate-pulse" />
                 <span className="text-[8px] text-white/60 font-black uppercase tracking-widest">TransitNet 3D Simulator v2.0</span>

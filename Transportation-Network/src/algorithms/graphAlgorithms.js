@@ -1,7 +1,4 @@
-/**
- * Dijkstra's Algorithm for Shortest Path
- * Returns distances, previous node tracking, and the specific path to all nodes
- */
+
 export const dijkstra = (nodes, edges, sourceId) => {
   const distances = {};
   const previous = {};
@@ -16,13 +13,13 @@ export const dijkstra = (nodes, edges, sourceId) => {
   distances[sourceId] = 0;
 
   while (queue.length > 0) {
-    // Basic priority queue behavior via sorting
+
     queue.sort((a, b) => distances[a] - distances[b]);
     const u = queue.shift();
 
     if (distances[u] === Infinity) break;
 
-    // Filter edges connected to current node u
+  
     const neighbors = edges.filter(e => e.source === u || e.target === u);
     
     for (const edge of neighbors) {
@@ -37,7 +34,7 @@ export const dijkstra = (nodes, edges, sourceId) => {
     }
   }
 
-  // Helper to reconstruct path to any target
+ 
   const getPathTo = (targetId) => {
     const path = [];
     const pathEdges = [];
@@ -56,9 +53,7 @@ export const dijkstra = (nodes, edges, sourceId) => {
   return { distances, previous, getPathTo };
 };
 
-/**
- * Breadth-First Search (BFS) Traversal
- */
+
 export const bfs = (nodes, edges, sourceId) => {
   const visited = new Set();
   const sequence = [];
@@ -83,9 +78,7 @@ export const bfs = (nodes, edges, sourceId) => {
   return sequence;
 };
 
-/**
- * Depth-First Search (DFS) Traversal
- */
+
 export const dfs = (nodes, edges, sourceId) => {
   const visited = new Set();
   const sequence = [];
@@ -109,9 +102,7 @@ export const dfs = (nodes, edges, sourceId) => {
   return sequence;
 };
 
-/**
- * Prim's Algorithm for Minimum Spanning Tree (MST)
- */
+
 export const getMST = (nodes, edges) => {
   if (nodes.length === 0) return { edges: [], cost: 0 };
 
@@ -122,7 +113,7 @@ export const getMST = (nodes, edges) => {
   for (const startNode of nodes) {
     if (visited.has(startNode.id)) continue;
     
-    // Start a new tree in the spanning forest
+   
     visited.add(startNode.id);
 
     while (true) {
@@ -133,7 +124,7 @@ export const getMST = (nodes, edges) => {
         const uIn = visited.has(edge.source);
         const vIn = visited.has(edge.target);
 
-        // Edge connects seen area to unseen area
+        
         if ((uIn && !vIn) || (!uIn && vIn)) {
           if (edge.weight < minWeight) {
             minWeight = edge.weight;
@@ -154,9 +145,7 @@ export const getMST = (nodes, edges) => {
   return { edges: mstEdges, cost: Number(totalCost.toFixed(2)) };
 };
 
-/**
- * Get Reachable nodes from source
- */
+
 export const getReachability = (nodes, edges, sourceId) => {
   if (!sourceId) return [];
   const reachableNodes = new Set();

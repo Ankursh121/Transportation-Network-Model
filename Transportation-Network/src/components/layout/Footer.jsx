@@ -108,7 +108,7 @@ const Footer = ({ isVisible, onClose }) => {
                Submitted To
              </div>
              <div className="text-[14px] font-black tracking-widest text-[#00d2ff] glow-text uppercase mb-2">
-               Ningombam Anandshree Singh Sir
+               Dr. Ningombam Anandshree Singh 
              </div>
              <a
                href="https://share.google/Q8OlPGILzRNx5JE0K"
